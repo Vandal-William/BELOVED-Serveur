@@ -1,19 +1,23 @@
-const ipfs = require('ipfs-api')()
+import * as IPFS from 'ipfs-core'
+import fs from 'fs'
 
-const mintIpfs = {
+   export async function jsonToIpfs(req, res) {
 
-    jsonToIpfs(req, res) {
+        const {name, description} = req.body
 
-        const data = {...req.body}
-        if (data.original_image !== null && data.name !== null ){
-            res.json(data)
-        } 
-        else {
-            
-            res.json('Empty Data')
-        }
+        const imagesDir = './uploads'
+
+        const files = fs.readdirSync(imagesDir)
+        const gateway = 'https://ipfs.io/ipfs/'
+
+        const ipfs = await IPFS.create()
+
+        for(let file of files) {
+        const buffer = fs.readFileSync(`${imagesDir}/${req.file.originalname}`)
+        const result = await ipfs.add(buffer)
+        const image = gateway+result.path
+        console.log(image)
+        
+        }  
     
     }
-}
-
-module.exports = mintIpfs;

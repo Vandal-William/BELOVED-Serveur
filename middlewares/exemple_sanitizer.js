@@ -1,14 +1,14 @@
 
-const sanitizer = require('sanitizer');
+import escape from 'sanitizer';
 
 const bodySanitizer = (req, res, next) => {
   if (req.body) {
     for (let propName in req.body) {
-      req.body[propName] = sanitizer.escape(req.body[propName]);
+      req.body[propName] = escape(req.body[propName]);
     }
   }
 
   next();
 };
 
-module.exports = bodySanitizer;
+export default bodySanitizer;

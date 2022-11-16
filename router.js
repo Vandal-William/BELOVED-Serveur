@@ -1,33 +1,37 @@
-const express = require('express');
-const router = express.Router();
-const database = require('./controllers/database');
-const user = require('./controllers/user');
-const mintIpfs = require('./controllers/convertToIpfs')
+import { Router } from 'express';
+const router = Router();
+import { findall, create, update, remove } from './controllers/database.js';
+import { login, signUp } from './controllers/user.js';
+import { jsonToIpfs } from './controllers/convertToIpfs.js';
+import multer from 'multer'
+import { storage } from './controllers/multerConfig.js';
+const upload = multer({ storage: storage })
 
 // rechercher dans une une BDD =>
 
 // Route pour afficher tous le contenu d'une table
-router.get('/findall', database.findall);
+router.get('/findall', findall);
 
 // Route pour ajouter un enregistrement dans la table
-router.post('/create', database.create);
+router.post('/create', create);
 
 // Route pour modifier une tache
-router.put("/update/:id", database.update);
+router.put("/update/:id", update);
 
 // Route pour supprimer une tache
-router.delete("/delete/:id", database.delete);
+router.delete("/delete/:id", remove);
 
 // connexion / déconnexion d'un utilisateur  =>
 
 // Connexion
-router.get('/login', user.login);
+router.get('/login', login);
 
 // Inscription
-router.get('/signup', user.signUp);
+router.get('/signup', signUp);
 
 // IPFS 
 
-router.post('/jsonipfs', mintIpfs.jsonToIpfs);
+router.post('/jsonipfs', upload.single("file"), jsonToIpfs);
 
-module.exports = router;
+
+export default router;

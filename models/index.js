@@ -1,5 +1,5 @@
 
-const Model_name = require("./model_name");
+import Model_name from "./model_name";
 
 // Model_name.hasMany(Auther_model, {
 //     as: '',
@@ -12,4 +12,4 @@ const Model_name = require("./model_name");
 // });
 
 
-module.exports = { Model_name };
+export { Model_name };
